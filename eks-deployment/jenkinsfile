@@ -1,0 +1,51 @@
+pipeline {
+    agent { 
+        kubernetes{
+            label 'terraform'
+        }      
+    }
+    environment{
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        DOCKER_USERNAME = credentials('DOCKER_USERNAME')
+        DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
+    }
+    stages {
+        stage('docker login') {
+            steps{
+                sh(script: """
+                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                """, returnStdout: true) 
+            }
+        }
+
+        stage('git clone') {
+            steps{
+                sh(script: """
+                    git clone https://github.com/wahaj123/Terraform-github-action.git
+                """, returnStdout: true) 
+            }
+        }
+
+        stage('docker build') {
+            steps{
+                sh script: '''
+                #!/bin/bash
+                export $AWS_ACCESS_KEY_ID
+                export $AWS_SECRET_ACCESS_KEY
+                pwd
+                ls
+                '''
+            }
+        }
+        stage('deploy') {
+            steps{
+                sh script: '''
+                #!/bin/bash
+                pwd
+                ls
+                '''
+            }
+        }
+    }
+}
