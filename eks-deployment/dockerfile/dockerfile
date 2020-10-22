@@ -15,6 +15,15 @@ RUN groupadd -g ${gid} ${group}
 RUN useradd -c "Jenkins user" -d $HOME -u ${uid} -g ${gid} -m ${user}
 RUN usermod -aG docker ${user}
 RUN usermod -aG sudo ${user}
+RUN wget https://releases.hashicorp.com/terraform/0.13.4/terraform_0.13.4_linux_amd64.zip
+
+# Unzip
+RUN unzip terraform_0.13.4_linux_amd64.zip
+
+# Move to local bin
+RUN mv terraform /usr/local/bin/
+# Check that it's installed
+RUN terraform --version 
 
 ARG VERSION=3.20
 ARG AGENT_WORKDIR=/home/${user}/agent

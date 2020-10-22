@@ -4,6 +4,7 @@ metadata:
   name: example-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/affinity-mode: cookie
 spec:
   rules:
   - host: wahaj.eurustechnologies.info

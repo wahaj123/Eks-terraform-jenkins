@@ -1,9 +1,0 @@
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: standard
-provisioner: kubernetes.io/aws-ebs
-allowVolumeExpansion: true
-parameters:
-  type: gp2
-  zones: us-east-2a, us-east-2b, us-east-2c

@@ -1,25 +1,14 @@
 pipeline {
     agent { 
-        kubernetes{
+        kubernetes {
             label 'jenkins-slave'
         }      
-    }
-    tool {
-        terraform 'terraform'
-    }
-    environment{
-        DOCKER_USERNAME = credentials('DOCKER_USERNAME')
-        DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
+    }  
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     stages {
-        stage('docker login') {
-            steps{
-                sh(script: """
-                    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-                """, returnStdout: true) 
-            }
-        }
-
         stage('git clone') {
             steps{
                 sh(script: """
@@ -27,13 +16,14 @@ pipeline {
                 """, returnStdout: true) 
             }
         }
-        stage('deploy') {
+        stage('terraform deploy') {          
             steps{
                 sh script: '''
                 #!/bin/bash
                 cd Eks-terraform-jenkins
-                terraform init
+                terraform init 
                 terraform plan
+                terraform apply -auto-approve
                 '''
             }
         }
