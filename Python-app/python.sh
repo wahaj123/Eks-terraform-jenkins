@@ -1,3 +1,3 @@
 #!/bin/bash
-kubectle apply -f python-deployment.yaml
-kubectle apply -f python-service.yaml
+kubectl apply -f python-deployment.yaml
+kubectl apply -f python-service.yaml
