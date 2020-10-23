@@ -14,5 +14,6 @@ spec:
       containers:
       - name: hello-python
         image: wahaj123/hi-python
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
